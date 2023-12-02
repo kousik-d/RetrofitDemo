@@ -15,6 +15,8 @@ class ApiViewModel(private val apiRepository: ApiRepository) :ViewModel(){
 
     val allPosts : MutableLiveData<List<Posts>> = MutableLiveData()
 
+    val responseForId : MutableLiveData<Posts> = MutableLiveData()
+
     fun insertPost(posts: Posts) = viewModelScope.async(IO){
         apiRepository.insertPost(posts)
     }
@@ -31,7 +33,10 @@ class ApiViewModel(private val apiRepository: ApiRepository) :ViewModel(){
     }
 
     fun getPostWithPath(id:Int) = viewModelScope.launch {
-        apiRepository.getPostWithPath(id)
+        val response = apiRepository.getPostWithPath(id)
+        if(response.isSuccessful){
+            responseForId.value = response.body()
+        }
     }
 
     fun insertPostWithFormUrl(

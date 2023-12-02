@@ -34,8 +34,14 @@ class MainActivity : AppCompatActivity() {
         apiViewModel.allPosts.observe(this, Observer {
             Log.i("TOTALLIST","${it}")
         })
-        val post = Posts(10,20,"Kousik","Dasari")
-        insertPosts(post)
+
+        binding.Getbutton.setOnClickListener {
+            val id = binding.IdEditText.text.toString().toInt()
+            apiViewModel.getPostWithPath(id)
+            apiViewModel.responseForId.observe(this,Observer{
+                binding.textView.text = "${it}"
+            })
+        }
     }
 
     fun insertPosts(posts: Posts){
