@@ -17,6 +17,10 @@ class ApiViewModel(private val apiRepository: ApiRepository) :ViewModel(){
 
     val responseForId : MutableLiveData<Posts> = MutableLiveData()
 
+    val responseCustomPosts : MutableLiveData<List<Posts>> = MutableLiveData()
+
+    val responseCustomPostsWithQueryMap : MutableLiveData<List<Posts>> = MutableLiveData()
+
     fun insertPost(posts: Posts) = viewModelScope.async(IO){
         apiRepository.insertPost(posts)
     }
@@ -36,6 +40,20 @@ class ApiViewModel(private val apiRepository: ApiRepository) :ViewModel(){
         val response = apiRepository.getPostWithPath(id)
         if(response.isSuccessful){
             responseForId.value = response.body()
+        }
+    }
+
+    fun getCustomPosts(userId: Int,sort: String,order:String) = viewModelScope.launch {
+        val response = apiRepository.getCustomPosts(userId,sort,order)
+        if(response.isSuccessful){
+            responseCustomPosts.value = response.body()
+        }
+    }
+
+    fun getCustomPostsWithQueryMap(userId: Int,options : Map<String,String>) = viewModelScope.launch {
+        val response = apiRepository.getCustomPostsWithQueryMap(userId,options)
+        if(response.isSuccessful){
+            responseCustomPostsWithQueryMap.value = response.body()
         }
     }
 

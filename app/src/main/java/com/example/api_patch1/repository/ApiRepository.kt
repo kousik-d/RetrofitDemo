@@ -16,6 +16,9 @@ class ApiRepository {
 
     suspend fun insertPost(posts: Posts) : Response<Posts> = APIs.api.insertPost(posts)
 
+    suspend fun getCustomPosts(userId: Int,sort: String,order: String) =APIs.api.getCustomPost(userId,sort,order)
+    suspend fun getCustomPostsWithQueryMap(userId: Int,options : Map<String,String>) =APIs.api.getCustomPostWithQueryMap(userId,options)
+
     suspend fun insertPostWithFormUrlEncoded(
         id:Int,
         userId :Int,

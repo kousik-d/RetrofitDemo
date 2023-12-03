@@ -35,6 +35,11 @@ class MainActivity : AppCompatActivity() {
             Log.i("TOTALLIST","${it}")
         })
 
+        val options : HashMap<String,String> = HashMap()
+
+        options["_sort"]="id"
+        options["_order"]="desc"
+
         binding.Getbutton.setOnClickListener {
             val id = binding.IdEditText.text.toString().toInt()
             apiViewModel.getPostWithPath(id)
@@ -53,6 +58,20 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    //Custom Response
+    fun CustomPostsUsingQueryMap(userId: Int,options : Map<String,String>){
+        apiViewModel.getCustomPostsWithQueryMap(userId,options)
+        apiViewModel.responseCustomPostsWithQueryMap.observe(this, Observer { response->
+            response.forEach {
+                Log.i("CUSTOMRES",it.userId.toString())
+                Log.i("CUSTOMRES",it.id.toString())
+                Log.i("CUSTOMRES",it.title)
+                Log.i("CUSTOMRES",it.body.toString())
+                Log.i("CUSTOMERS","__________________")
+            }
+        })
     }
 
     fun getPostsUsingCallBack(){

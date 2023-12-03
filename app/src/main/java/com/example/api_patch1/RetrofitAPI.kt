@@ -13,7 +13,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
-
+import retrofit2.http.QueryMap
 
 
 interface RetrofitAPI {
@@ -38,6 +38,19 @@ interface RetrofitAPI {
         @Field("title") title: String,
         @Field("body") body:String
     ):Response<Posts>
+
+    @GET("/posts")
+    suspend fun getCustomPost(
+        @Query("userId") userId: Int,
+        @Query("_sort") sort:String,
+        @Query("_order") order:String
+    ):Response<List<Posts>>
+
+    @GET("posts")
+    suspend fun getCustomPostWithQueryMap(
+        @Query("userId") userId: Int,
+        @QueryMap options : Map<String,String>
+    ):Response<List<Posts>>
 }
 private val BASE_URL ="https://jsonplaceholder.typicode.com"
 
