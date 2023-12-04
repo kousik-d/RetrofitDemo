@@ -1,6 +1,7 @@
 package com.example.api_patch1
 
 import androidx.lifecycle.LiveData
+import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -10,6 +11,7 @@ import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
+import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -20,6 +22,10 @@ interface RetrofitAPI {
     @GET("/posts")
     suspend fun getAllposts(): Response<List<Posts>>
 
+    //To specific Headers to requests
+    @Headers(
+        "X-Auth-Token:12345"
+    )
     @GET("/posts")
     suspend fun getPostWithQuery(@Query("id") id :Int) : Response<List<Posts>>
 
@@ -54,8 +60,10 @@ interface RetrofitAPI {
 }
 private val BASE_URL ="https://jsonplaceholder.typicode.com"
 
+private val client = OkHttpClient.Builder().addInterceptor(ApiInterceptor()).build()
 val retrofit = Retrofit.Builder()
     .baseUrl(BASE_URL)
+    .client(client)
     .addConverterFactory(GsonConverterFactory.create())
     .build()
 

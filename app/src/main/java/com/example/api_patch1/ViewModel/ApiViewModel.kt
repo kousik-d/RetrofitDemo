@@ -39,6 +39,7 @@ class ApiViewModel(private val apiRepository: ApiRepository) :ViewModel(){
     fun getPostWithPath(id:Int) = viewModelScope.launch {
         val response = apiRepository.getPostWithPath(id)
         if(response.isSuccessful){
+            Log.i("HEADERSS",response.headers().toString())
             responseForId.value = response.body()
         }
     }
